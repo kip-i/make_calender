@@ -25,7 +25,7 @@ for i in range(12):
   if int(time_list[i]) < 4:
     cv2.putText(img, time_list[i], (1055-i*40, 60+i*75), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1.5, white, thickness=2,lineType=cv2.LINE_AA)
   elif int(time_list[i]) < 10:
-    cv2.putText(img, time_list[i], (1050-i*40, 60+i*75), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1.5, white, thickness=2,lineType=cv2.LINE_AA)
+    cv2.putText(img, time_list[i], (1055-i*40, 60+i*75), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1.5, white, thickness=2,lineType=cv2.LINE_AA)
   else:
     cv2.putText(img, time_list[i], (1060-i*40, 60+i*75), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1.5, white, thickness=2,lineType=cv2.LINE_AA)
 
