@@ -1,5 +1,11 @@
-import cv2
 import numpy as np
+import os
+import datetime
+import copy
+
+import cv2
+import img2pdf
+
 
 def main():
     img = np.full((900, 1620, 3), (52,52,52), dtype=np.uint8)
@@ -72,21 +78,45 @@ def main():
     time_line3 = [1454,time_box[2],time_box[3]]
     cv2.line(img, (time_line3[0], time_line3[1]), (time_line3[0],  time_line3[2]), bg)
 
-    cv2.putText(img, 'game', (1239, 752), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, bg, thickness=1,lineType=cv2.LINE_AA)
-    cv2.putText(img, 'sleep', (1359, 752), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, bg, thickness=1,lineType=cv2.LINE_AA)
-    cv2.putText(img, '2', (1469, 752), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 0.8, bg, thickness=1,lineType=cv2.LINE_AA)
-    cv2.putText(img, '4', (1483, 752), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 0.8, bg, thickness=1,lineType=cv2.LINE_AA)
-    cv2.putText(img, 'sleep', (1500, 752), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, bg, thickness=1,lineType=cv2.LINE_AA)
+    cv2.putText(img, 'game', (1239, 752), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, bg, lineType=cv2.LINE_AA)
+    cv2.putText(img, 'sleep', (1359, 752), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, bg, lineType=cv2.LINE_AA)
+    cv2.putText(img, '2', (1469, 752), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 0.8, bg, lineType=cv2.LINE_AA)
+    cv2.putText(img, '4', (1483, 752), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 0.8, bg, lineType=cv2.LINE_AA)
+    cv2.putText(img, 'sleep', (1500, 752), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, bg, lineType=cv2.LINE_AA)
 
-    #例文を入れる
-    cv2.putText(img, ' 2', (246, 130), cv2.FONT_HERSHEY_COMPLEX, 1, bg, thickness=1,lineType=cv2.LINE_AA)
-    cv2.putText(img, '22', (381, 130), cv2.FONT_HERSHEY_COMPLEX, 1, bg, thickness=1,lineType=cv2.LINE_AA)
-    cv2.putText(img, '2023', (486, 130), cv2.FONT_HERSHEY_COMPLEX, 1, bg, thickness=1,lineType=cv2.LINE_AA)
-    cv2.putText(img, 'February', (216, 70), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 0.8, bg, thickness=1,lineType=cv2.LINE_AA)
-    cv2.putText(img, 'Wednesday', (346, 70), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 0.8, bg, thickness=1,lineType=cv2.LINE_AA)
+    dir_name = os.getcwd()+ '/pngs/'
+    if not os.path.exists(dir_name):
+        os.mkdir(dir_name)
 
+    date = datetime.datetime(2023,2,22)
+    images = []
+    month = ['January','February','March','April','May','June','July','August','September','October','November','December']
+    weekday = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 
-    cv2.imwrite('calender.png', img)
+    for i in range(365):
+        img_date = copy.deepcopy(img)
+        #日付を画像に入れる
+        if int(date.day) < 10:
+            cv2.putText(img_date, ' '+str(date.day), (381, 130), cv2.FONT_HERSHEY_COMPLEX, 1, bg, lineType=cv2.LINE_AA)
+        else:
+            cv2.putText(img_date, str(date.day), (381, 130), cv2.FONT_HERSHEY_COMPLEX, 1, bg, lineType=cv2.LINE_AA)
+        
+        if int(date.month) < 10:
+            cv2.putText(img_date, ' '+str(date.month), (246, 130), cv2.FONT_HERSHEY_COMPLEX, 1, bg, lineType=cv2.LINE_AA)
+        else:
+            cv2.putText(img_date, str(date.month), (246, 130), cv2.FONT_HERSHEY_COMPLEX, 1, bg, lineType=cv2.LINE_AA)
+
+        cv2.putText(img_date, month[date.month-1], (216, 70), cv2.FONT_HERSHEY_SCRIPT_SIMPLEX, 0.8, bg, lineType=cv2.LINE_AA)
+        cv2.putText(img_date, weekday[date.weekday()], (346, 70), cv2.FONT_HERSHEY_SCRIPT_SIMPLEX, 0.8, bg, lineType=cv2.LINE_AA)
+        cv2.putText(img_date, '2023', (486, 130), cv2.FONT_HERSHEY_COMPLEX, 1, bg, lineType=cv2.LINE_AA)
+
+        cv2.imwrite(os.path.join(dir_name, 'calender_page_'+str(date.month)+'-'+str(date.day)+'.png'), img_date)
+        images.append(os.path.join(dir_name, 'calender_page_'+str(date.month)+'-'+str(date.day)+'.png'))
+        date += datetime.timedelta(days=1)
+    output_pdf_name = 'calender.pdf'
+    with open (output_pdf_name,'wb') as f:
+        f.write(img2pdf.convert(images))
+    
 
 if __name__ == '__main__':
     main()
