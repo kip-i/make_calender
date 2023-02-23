@@ -34,8 +34,12 @@ def main():
             cv2.putText(img, time_list[i], (1067-i*x_slide, 60+i*75), cv2.FONT_HERSHEY_COMPLEX, 1.5, white,lineType=cv2.LINE_AA)
         #分刻み線
         for j in range(1,6):
-            cv2.line(img, (700+j*60-i*x_slide,i*75+1),(700+j*60-i*x_slide,20+i*75-1), bg_re,thickness=2)
-            cv2.line(img, (1140+j*60-i*x_slide,i*75+1),(1140+j*60-i*x_slide,20+i*75-1), bg_re,thickness=2)
+            if (j == 2)or (j == 4):
+                cv2.line(img, (700+j*60-i*x_slide,i*75+1),(700+j*60-i*x_slide,20+i*75-1), white,thickness=2)
+                cv2.line(img, (1140+j*60-i*x_slide,i*75+1),(1140+j*60-i*x_slide,20+i*75-1), white,thickness=2)
+            else:
+                cv2.line(img, (700+j*60-i*x_slide,i*75+1),(700+j*60-i*x_slide,20+i*75-1), bg_re,thickness=2)
+                cv2.line(img, (1140+j*60-i*x_slide,i*75+1),(1140+j*60-i*x_slide,20+i*75-1), bg_re,thickness=2)
         if not i == 0:
             #仕切り線
             cv2.line(img, (700-i*x_slide, i*75), (1500-i*x_slide,  i*75), bg)
