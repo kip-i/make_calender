@@ -49,6 +49,16 @@ def main():
         #上下区切り線
         cv2.line(img, (700-i*x_slide, 20+i*75), (1500-i*x_slide,  20+i*75), bg)
 
+        #端の白線
+        cv2.line(img, (699-i*x_slide,1+i*75),(699-i*x_slide,74+i*75), white)
+        cv2.line(img, (700-i*x_slide,1+i*75),(700-i*x_slide,74+i*75), white)
+        cv2.line(img, (1061-i*x_slide,1+i*75),(1061-i*x_slide,74+i*75), white)
+        cv2.line(img, (1060-i*x_slide,1+i*75),(1060-i*x_slide,74+i*75), white)
+        cv2.line(img, (1140-i*x_slide,1+i*75),(1140-i*x_slide,74+i*75), white)
+        cv2.line(img, (1139-i*x_slide,1+i*75),(1139-i*x_slide,74+i*75), white)
+        cv2.line(img, (1500-i*x_slide,1+i*75),(1500-i*x_slide,74+i*75), white)
+        cv2.line(img, (1501-i*x_slide,1+i*75),(1501-i*x_slide,74+i*75), white)
+
     #日付表
     day_box = [206,586,40,140] #lx,rx,uy,dy
     cv2.fillConvexPoly(img, np.array([[day_box[0],day_box[2]],[day_box[1],day_box[2]],[day_box[1],day_box[3]],[day_box[0],day_box[3]]]), write_area)
